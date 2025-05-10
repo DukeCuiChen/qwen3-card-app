@@ -2,19 +2,44 @@ import React, { useState } from 'react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="bg-black text-white font-sans">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-12 py-6 flex justify-between items-center border-b border-gray-800 bg-black/90 backdrop-blur-md">
-        <div className="text-3xl font-bold tracking-tight">Qwen<span className="text-blue-400">3</span></div>
-        <nav className="space-x-8 text-sm font-medium hidden md:flex">
+<header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center border-b border-gray-800 bg-black/90 backdrop-blur-md">
+        <div className="text-2xl md:text-3xl font-bold tracking-tight">Qwen<span className="text-blue-400">3</span></div>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex space-x-8 text-sm font-medium">
           <button onClick={() => setActiveTab('overview')} className={`pb-1 ${activeTab === 'overview' ? 'border-b-2 border-blue-400' : 'hover:text-blue-400'}`}>核心亮点</button>
           <button onClick={() => setActiveTab('models')} className={`pb-1 ${activeTab === 'models' ? 'border-b-2 border-blue-400' : 'hover:text-blue-400'}`}>模型矩阵</button>
           <button onClick={() => setActiveTab('performance')} className={`pb-1 ${activeTab === 'performance' ? 'border-b-2 border-blue-400' : 'hover:text-blue-400'}`}>性能表现</button>
           <button onClick={() => setActiveTab('open-source')} className={`pb-1 ${activeTab === 'open-source' ? 'border-b-2 border-blue-400' : 'hover:text-blue-400'}`}>开源生态</button>
         </nav>
+
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden text-white focus:outline-none"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+          </svg>
+        </button>
       </header>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="fixed top-16 left-0 right-0 bg-black/95 backdrop-blur-md z-40 md:hidden px-6 py-4 border-b border-gray-800">
+          <nav className="flex flex-col space-y-4 text-base font-medium">
+            <button onClick={() => { setActiveTab('overview'); setIsMenuOpen(false); }} className={`${activeTab === 'overview' ? 'text-blue-400' : 'hover:text-blue-400'}`}>核心亮点</button>
+            <button onClick={() => { setActiveTab('models'); setIsMenuOpen(false); }} className={`${activeTab === 'models' ? 'text-blue-400' : 'hover:text-blue-400'}`}>模型矩阵</button>
+            <button onClick={() => { setActiveTab('performance'); setIsMenuOpen(false); }} className={`${activeTab === 'performance' ? 'text-blue-400' : 'hover:text-blue-400'}`}>性能表现</button>
+            <button onClick={() => { setActiveTab('open-source'); setIsMenuOpen(false); }} className={`${activeTab === 'open-source' ? 'text-blue-400' : 'hover:text-blue-400'}`}>开源生态</button>
+          </nav>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="pt-24 pb-32 px-8 md:px-16 max-w-7xl mx-auto">
